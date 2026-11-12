@@ -226,8 +226,12 @@ export default function Home() {
           <div className="team-grid">
             {barbers.map((barber) => (
               <article className="team-card" key={barber.id}>
-                <div className="team-avatar" aria-hidden="true">
-                  <span>{barber.initials}</span>
+                <div className="team-avatar" aria-hidden={barber.photoUrl ? undefined : true}>
+                  {barber.photoUrl ? (
+                    <img src={barber.photoUrl} alt={`Foto de ${barber.name}`} loading="lazy" />
+                  ) : (
+                    <span>{barber.initials}</span>
+                  )}
                 </div>
                 <span className="team-badge">Perfil demonstrativo</span>
                 <h3>{barber.name}</h3>
