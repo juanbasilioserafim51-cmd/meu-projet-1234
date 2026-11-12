@@ -12,6 +12,7 @@ export type Barber = {
   name: string;
   specialty: string;
   bio: string;
+  photoUrl: string;
   active: boolean;
   initials: string;
 };

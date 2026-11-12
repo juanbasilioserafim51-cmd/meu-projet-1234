@@ -44,7 +44,7 @@ export function listServices({ includeInactive = false } = {}) {
 
 export function listBarbers({ includeInactive = false } = {}) {
   const rows = db.all(
-    `SELECT id, name, specialty, bio, active
+    `SELECT id, name, specialty, bio, photo_url, active
        FROM barbers ${includeInactive ? '' : 'WHERE active = 1'}
       ORDER BY sort_order ASC, id ASC`,
   );
@@ -53,6 +53,7 @@ export function listBarbers({ includeInactive = false } = {}) {
     name: row.name,
     specialty: row.specialty,
     bio: row.bio,
+    photoUrl: row.photo_url || '',
     active: Boolean(row.active),
     initials: initialsOf(row.name),
   }));

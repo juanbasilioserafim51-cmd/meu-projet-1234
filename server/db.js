@@ -34,6 +34,7 @@ db.exec(`
     name TEXT NOT NULL,
     specialty TEXT NOT NULL DEFAULT '',
     bio TEXT NOT NULL DEFAULT '',
+    photo_url TEXT NOT NULL DEFAULT '',
     active INTEGER NOT NULL DEFAULT 1,
     sort_order INTEGER NOT NULL DEFAULT 0
   );
@@ -80,6 +81,12 @@ db.exec(`
     expires_at TEXT NOT NULL
   );
 `);
+
+// Migrações incrementais para bancos criados em versões anteriores.
+const barberColumns = db.all('PRAGMA table_info(barbers)');
+if (!barberColumns.some((column) => column.name === 'photo_url')) {
+  db.run("ALTER TABLE barbers ADD COLUMN photo_url TEXT NOT NULL DEFAULT ''");
+}
 
 const DEFAULT_SETTINGS = {
   whatsapp_number: process.env.WHATSAPP_NUMBER || '5521979596565',
@@ -178,10 +185,11 @@ export function seedDemoData({ force = false } = {}) {
   if (force || Number(barberCount?.total) === 0) {
     if (force) db.run('DELETE FROM barbers');
     DEMO_BARBERS.forEach((barber, index) => {
-      db.run('INSERT INTO barbers (name, specialty, bio, active, sort_order) VALUES (?, ?, ?, 1, ?)', [
+      db.run('INSERT INTO barbers (name, specialty, bio, photo_url, active, sort_order) VALUES (?, ?, ?, ?, 1, ?)', [
         barber.name,
         barber.specialty,
         barber.bio,
+        barber.photo_url ?? '',
         index,
       ]);
     });
