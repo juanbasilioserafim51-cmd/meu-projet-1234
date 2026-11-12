@@ -1,8 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { Database } from 'node-sqlite3-wasm';
+import { createRequire } from 'node:module';
 import { hashPassword } from './lib/auth.js';
+
+const require = createRequire(import.meta.url);
+const { Database } = require('node-sqlite3-wasm');
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
