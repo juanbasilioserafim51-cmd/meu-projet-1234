@@ -1,0 +1,17 @@
+{
+  "name": "elite-barber",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ELITE BARBER - aplicativo de barbearia premium com agendamento online e painel administrativo",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node server/index.js",
+    "build": "vite build",
+    "start": "node server/index.js",
+    "seed": "node server/seed.js",
+    "test:api": "node scripts/test-api.mjs"
+  }
+}
