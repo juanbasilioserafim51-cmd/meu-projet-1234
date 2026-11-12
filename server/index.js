@@ -292,12 +292,14 @@ api.post('/admin/barbers', requireAdmin, (req, res) => {
   const name = normalizeText(req.body?.name, 60);
   const specialty = normalizeText(req.body?.specialty, 80);
   const bio = normalizeText(req.body?.bio, 240);
+  const photoUrl = normalizeText(req.body?.photoUrl, 400);
   if (name.length < 2) throw new ApiError(400, 'Informe o nome do barbeiro.');
   const order = db.get('SELECT IFNULL(MAX(sort_order), -1) + 1 AS next FROM barbers');
-  db.run('INSERT INTO barbers (name, specialty, bio, active, sort_order) VALUES (?, ?, ?, ?, ?)', [
+  db.run('INSERT INTO barbers (name, specialty, bio, photo_url, active, sort_order) VALUES (?, ?, ?, ?, ?, ?)', [
     name,
     specialty,
     bio,
+    photoUrl,
     req.body?.active === false ? 0 : 1,
     Number(order.next),
   ]);
@@ -312,12 +314,14 @@ api.put('/admin/barbers/:id', requireAdmin, (req, res) => {
   const name = normalizeText(req.body?.name ?? existing.name, 60);
   const specialty = normalizeText(req.body?.specialty ?? existing.specialty, 80);
   const bio = normalizeText(req.body?.bio ?? existing.bio, 240);
+  const photoUrl = normalizeText(req.body?.photoUrl ?? existing.photo_url, 400);
   const active = req.body?.active === undefined ? existing.active : req.body.active ? 1 : 0;
   if (name.length < 2) throw new ApiError(400, 'Informe o nome do barbeiro.');
-  db.run('UPDATE barbers SET name = ?, specialty = ?, bio = ?, active = ? WHERE id = ?', [
+  db.run('UPDATE barbers SET name = ?, specialty = ?, bio = ?, photo_url = ?, active = ? WHERE id = ?', [
     name,
     specialty,
     bio,
+    photoUrl,
     active,
     id,
   ]);
